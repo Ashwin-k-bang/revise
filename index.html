@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#EEF1EF">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" href="icon-192.png">
+<title>Revise</title>
+<style>
+:root{--bg:#EEF1EF;--card:#fff;--ink:#17302D;--mute:#667A77;--line:#D9E0DD;--acc:#0F766E;--rec:#E5484D;--r:14px}
+:root[data-theme=dark]{--bg:#0E1514;--card:#16201F;--ink:#E4EEEC;--mute:#8CA19E;--line:#263433;--acc:#2DD4BF;--rec:#FF6369}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 "Avenir Next","Segoe UI",system-ui,sans-serif;padding:0 env(safe-area-inset-right) 60px env(safe-area-inset-left)}
+a{color:inherit}
+header{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line);padding:calc(10px + env(safe-area-inset-top)) 16px 10px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+header .back{text-decoration:none;border:1px solid var(--line);background:var(--card);border-radius:10px;padding:8px 14px;font-weight:600}
+header h1{font-size:20px;margin:0;letter-spacing:-.02em}
+.sp{flex:1}
+#syncb{font:inherit;font-size:13px;border:1px solid var(--line);background:var(--card);border-radius:10px;padding:8px 12px;text-decoration:none;color:var(--ink);white-space:nowrap}
+#syncb.ok{color:var(--acc)}#syncb.err{color:var(--rec)}
+main{max-width:900px;margin:auto;padding:16px}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:13px;color:var(--mute);margin-bottom:14px}
+.legend i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:10px}
+.box{position:relative;aspect-ratio:1/1;border-radius:14px;border:1px solid rgba(255,255,255,.18);color:#fff;font:inherit;cursor:pointer;padding:10px 8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;text-align:center;
+  background:var(--c);box-shadow:0 1px 0 rgba(0,0,0,.08);-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;touch-action:manipulation;transition:transform .12s,background .3s}
+.box:active{transform:scale(.96)}
+.box .n{font-weight:700;font-size:15px;line-height:1.2;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;text-shadow:0 1px 2px rgba(0,0,0,.25)}
+.box .d{font-size:12px;opacity:.92;text-shadow:0 1px 2px rgba(0,0,0,.25)}
+.box .p{font-size:24px;font-weight:800;line-height:1;text-shadow:0 1px 2px rgba(0,0,0,.25)}
+.box.lite{color:#0B1F1C}.box.lite .n,.box.lite .d,.box.lite .p{text-shadow:none}
+.box.holding{transform:scale(.93);filter:brightness(.9)}
+.box .go{position:absolute;top:4px;right:4px;width:26px;height:26px;border-radius:50%;background:rgba(0,0,0,.22);color:#fff;display:grid;place-items:center;text-decoration:none;font-size:13px;opacity:.85}
+.box .go:hover{opacity:1;background:rgba(0,0,0,.4)}
+.add{background:transparent;border:2px dashed var(--line);color:var(--mute);font-size:34px;gap:0}
+.add small{font-size:12px}
+.add:hover{border-color:var(--acc);color:var(--acc)}
+.note{font-size:13px;color:var(--mute)}
+.empty{grid-column:1/-1;color:var(--mute);padding:6px 2px}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+dialog{border:1px solid var(--line);border-radius:var(--r);background:var(--card);color:var(--ink);padding:18px;width:min(92vw,380px)}
+dialog::backdrop{background:rgba(0,0,0,.45)}
+dialog h3{margin:0 0 10px}
+dialog input{font:inherit;color:inherit;width:100%;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px}
+.row{display:flex;gap:8px;margin-top:12px;justify-content:flex-end}
+.row button{font:inherit;color:inherit;cursor:pointer;border:1px solid var(--line);background:var(--card);border-radius:10px;padding:8px 14px}
+.row .pri{background:var(--acc);border-color:var(--acc);color:var(--bg);font-weight:600}
+.plan{margin-top:18px;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px}
+.plan h3{margin:0 0 4px;font-size:16px}
+.plan label{display:block;font-size:13px;color:var(--mute);margin:8px 0 4px}
+.plan input{font:inherit;color:inherit;width:100%;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px}
+#planOut{margin-top:12px;font-size:15px}
+#planOut .big{font-size:26px;font-weight:800;letter-spacing:-.02em;color:var(--acc)}
+#planOut .warn{color:var(--rec);font-weight:600}
+#planOut .sub{font-size:13px;color:var(--mute);margin-top:4px}
+#toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--ink);color:var(--bg);border-radius:12px;padding:10px 14px;display:none;gap:14px;align-items:center;z-index:20;max-width:92vw;box-shadow:0 6px 20px rgba(0,0,0,.25)}
+#toast.on{display:flex}
+#toast button{font:inherit;background:none;border:0;color:inherit;font-weight:700;text-decoration:underline;cursor:pointer;padding:0}
+
+.sec{margin-bottom:30px}
+.sechead{display:flex;align-items:center;gap:8px;margin:0 0 10px}
+.sechead h2{font-size:18px;margin:0;flex:1;letter-spacing:-.01em;overflow-wrap:anywhere}
+.mini{font:inherit;font-size:12px;color:var(--mute);border:1px solid var(--line);background:var(--card);border-radius:8px;padding:5px 10px;cursor:pointer}
+.newsec{font:inherit;width:100%;cursor:pointer;border:2px dashed var(--line);background:transparent;color:var(--mute);border-radius:var(--r);padding:16px;font-size:16px;margin-top:6px}
+.newsec:hover{border-color:var(--acc);color:var(--acc)}
+.box .q{font-size:11px;opacity:.9;text-shadow:0 1px 2px rgba(0,0,0,.25)}
+.box.lite .q{text-shadow:none}
+.box .n{-webkit-line-clamp:2}
+</style>
+</head>
+<body>
+<header>
+  <h1>Revise</h1>
+  <span class="sp"></span>
+  <a id="syncb" href="#sync">Sync</a>
+</header>
+<main>
+  <div class="legend" id="legend"></div>
+  <div id="secs"></div>
+  <button class="newsec" id="addsec" type="button">+ New section (separate heatmap &amp; planner)</button>
+  <p class="note" style="margin-top:16px">Tap a box = you did 20 more questions of that topic. Press and hold (or tap &#8599;) = open its page to see history, set the total questions and change its name.</p>
+</main>
+
+<dialog id="dlg">
+  <h3 id="dh">New revision topic</h3>
+  <input id="nm" maxlength="80" placeholder="Topic name" aria-label="Name" autocomplete="off">
+  <div class="row"><button type="button" id="cx">Cancel</button><button type="button" class="pri" id="ok">Add</button></div>
+</dialog>
+<div id="toast" role="status"><span id="tmsg"></span><button id="undo">Undo</button></div>
+
+<script src="revise.js?v=4"></script>
+<script>
+let T=[],L=[],S=[],mode='topic',pendSec='';
+const topicUrl=id=>'topic.html?t='+encodeURIComponent(id);
+const secList=()=>[{id:'',name:'Main'},...S];
+const paceKey=sid=>'rv-pace'+(sid?'-'+sid:'');
+const paceOf=sid=>{try{return localStorage.getItem(paceKey(sid))||''}catch(e){return''}};
+
+function boxHTML(t){
+  const s=scoreOf(t,L);
+  return `<button class="box${s.S>75?' lite':''}" data-id="${esc(t.id)}" style="--c:${colourOf(s.S)}" aria-label="${esc(t.name)}, ${s.pct}% complete, ${t.n||0} questions, ${esc(s.label)}. Tap to log 20 questions.">
+    <a class="go" href="${topicUrl(t.id)}" aria-label="Open ${esc(t.name)} page">&#8599;</a>
+    <span class="p">${s.pct}%</span><span class="n">${esc(t.name)}</span><span class="d">${esc(s.label)}</span><span class="q">${t.n||0} Q</span></button>`;
+}
+function secHTML(sec,head){
+  const ts=T.filter(t=>(t.s||'')===sec.id);
+  return `<section class="sec" data-sec="${esc(sec.id)}">
+    ${head?`<div class="sechead"><h2>${esc(sec.name)}</h2>${sec.id?`<button class="mini" data-act="ren" type="button">Rename</button><button class="mini" data-act="delsec" type="button">Delete</button>`:''}</div>`:''}
+    <div class="grid">${ts.map(boxHTML).join('')}<button class="box add" aria-label="Add a new revision topic">+<small>New topic</small></button>${ts.length?'':'<p class="empty">No topics yet. Tap + to add your first one.</p>'}</div>
+    <section class="plan">
+      <h3>Finish-line planner</h3>
+      <div class="note">How long until every topic${head?' in '+esc(sec.name):''} is fully revised (100%) at the same time?</div>
+      <label>Number of questions per day</label>
+      <input class="qpd" data-sec="${esc(sec.id)}" type="number" inputmode="numeric" min="1" step="1" placeholder="e.g. 60" value="${esc(paceOf(sec.id))}">
+      <div class="planOut" role="status"></div>
+    </section></section>`;
+}
+function render(){
+  const a=document.activeElement,keep=a&&a.classList&&a.classList.contains('qpd')?a.dataset.sec:null;
+  const head=S.length>0;
+  $('#secs').innerHTML=secList().map(s=>secHTML(s,head)).join('');
+  if(keep!==null){const el=document.querySelector('.qpd[data-sec="'+keep+'"]');if(el)el.focus()}
+  document.querySelectorAll('.sec').forEach(updatePlan);
+  $('#legend').innerHTML=`<span>Revision score</span><span style="flex:1;min-width:140px;height:11px;border-radius:6px;align-self:center;background:linear-gradient(90deg,#000 0%,#DC2626 29%,#EA7A0C 59%,#FACC15 80%,#22E55E 100%);border:1px solid var(--line)"></span><span>1 &rarr; 100 &middot; % on a box = completion</span>`;
+}
+/* ----- finish-line planner (per section) ----- */
+function plan(q,all){
+  const ts=all.filter(t=>t.n>0),skipped=all.length-ts.length;
+  if(!ts.length)return{k:'none'};
+  const sets=q/SET,total=ts.reduce((a,t)=>a+t.n,0);
+  const held=(t,D)=>L.reduce((a,l)=>l.t===t.id?a+setVal(daysSince(l.ts)+D-1):a,0);
+  const needAt=D=>ts.reduce((a,t)=>a+Math.max(0,t.n-held(t,D)),0);
+  if(needAt(1)<=0)return{k:'done',skipped};
+  for(let D=1;D<=730;D++){
+    let cap=0;
+    for(let j=Math.max(1,D-LIFE+1);j<=D;j++)cap+=sets*setVal(D-j);
+    if(cap+1e-9>=needAt(D))return{k:'ok',D,skipped};
+  }
+  return{k:'never',min:Math.ceil(total*SET/(LIFE*(LIFE+1)/2)),skipped};
+}
+function updatePlan(sec){
+  const sid=sec.dataset.sec,inp=sec.querySelector('.qpd'),out=sec.querySelector('.planOut'),q=parseFloat(inp.value);
+  try{localStorage.setItem(paceKey(sid),inp.value)}catch(e){}
+  if(!(q>0)){out.innerHTML='<div class="sub">Enter how many questions you can do per day.</div>';return}
+  const r=plan(q,T.filter(t=>(t.s||'')===sid));
+  if(r.k==='none'){out.innerHTML='<div class="sub">Open a topic and enter its total number of questions first.</div>';return}
+  const skip=r.skipped?`<div class="sub">${r.skipped} topic${r.skipped>1?'s have':' has'} no total questions yet and ${r.skipped>1?'are':'is'} left out.</div>`:'';
+  if(r.k==='done'){out.innerHTML='<div class="big">Already complete</div><div class="sub">Every topic is at 100% right now.</div>'+skip;return}
+  if(r.k==='never'){out.innerHTML=`<div class="warn">Not reachable at ${q} questions/day.</div><div class="sub">Each set loses its value over 20 days, so to hold every topic at 100% together you need about ${r.min} questions/day or more.</div>`+skip;return}
+  const d=new Date();d.setDate(d.getDate()+r.D-1);
+  out.innerHTML=`<div class="big">${r.D} day${r.D>1?'s':''}</div>
+    <div>Every topic reaches 100% on <b>${d.toLocaleDateString(undefined,{weekday:'short',day:'numeric',month:'short',year:'numeric'})}</b> (counting today as day 1).</div>
+    <div class="sub">${Math.round(r.D*q)} questions in total at ${(q/SET).toFixed(1)} sets a day. Counts your logged revisions and the 20-day fading of every set.</div>`+skip;
+}
+async function load(){const d=await RV.all();T=d.topics;L=d.logs;S=d.sections;render()}
+
+/* ----- tap = revised now; long press = open topic page ----- */
+let lp=null,lpFired=false,sx=0,sy=0,lastLog=null,tt=null;
+function toast(m,undo){clearTimeout(tt);$('#tmsg').textContent=m;$('#undo').style.display=undo?'':'none';$('#toast').classList.add('on');tt=setTimeout(()=>$('#toast').classList.remove('on'),5000)}
+const secs=$('#secs');
+secs.addEventListener('input',e=>{const i=e.target.closest('.qpd');if(i)updatePlan(i.closest('.sec'))});
+secs.addEventListener('pointerdown',e=>{
+  const b=e.target.closest('.box[data-id]');if(!b||e.target.closest('.go'))return;
+  lpFired=false;sx=e.clientX;sy=e.clientY;b.classList.add('holding');
+  lp=setTimeout(()=>{lpFired=true;b.classList.remove('holding');if(navigator.vibrate)try{navigator.vibrate(30)}catch(x){}location.href=topicUrl(b.dataset.id)},550);
+});
+const cancel=()=>{clearTimeout(lp);document.querySelectorAll('.box.holding').forEach(x=>x.classList.remove('holding'))};
+secs.addEventListener('pointermove',e=>{if(lp&&Math.hypot(e.clientX-sx,e.clientY-sy)>10)cancel()});
+['pointerup','pointercancel','pointerleave'].forEach(ev=>secs.addEventListener(ev,cancel));
+secs.addEventListener('contextmenu',e=>{if(e.target.closest('.box'))e.preventDefault()});
+function openDlg(m,sid){
+  mode=m;pendSec=sid||'';
+  $('#dh').textContent=m==='section'?'New section':'New revision topic';
+  $('#nm').placeholder=m==='section'?'Section name (e.g. SSC English)':'Topic name';
+  $('#nm').value='';$('#dlg').showModal();setTimeout(()=>$('#nm').focus(),50);
+}
+secs.addEventListener('click',e=>{
+  if(e.target.closest('.go'))return;
+  const act=e.target.closest('[data-act]');
+  if(act){
+    const sid=act.closest('.sec').dataset.sec,sec=S.find(x=>x.id===sid);if(!sec)return;
+    if(act.dataset.act==='ren'){const n=prompt('Rename section',sec.name);if(n&&n.trim())RV.put({...sec,name:n.trim().slice(0,80)}).then(load)}
+    else{
+      const tids=T.filter(t=>t.s===sid).map(t=>t.id),lids=L.filter(l=>tids.includes(l.t)).map(l=>l.id);
+      if(confirm('Delete section "'+sec.name+'" with its '+tids.length+' topic(s) and all their history?'))RV.del([sid,...tids,...lids]).then(load);
+    }
+    return;
+  }
+  const b=e.target.closest('.box');if(!b)return;
+  if(b.classList.contains('add')){openDlg('topic',b.closest('.sec').dataset.sec);return}
+  if(lpFired){lpFired=false;return}
+  const t=T.find(x=>x.id===b.dataset.id);if(!t)return;
+  const rec={id:RV.uid(),k:'r',t:t.id,ts:Date.now()};
+  lastLog=rec.id;
+  RV.put(rec).then(load);
+  toast('+20 questions logged for “'+t.name+'”',true);
+});
+$('#undo').onclick=()=>{if(lastLog){RV.del(lastLog).then(load);lastLog=null}$('#toast').classList.remove('on')};
+$('#addsec').onclick=()=>openDlg('section');
+
+/* ----- add topic / section ----- */
+function addItem(){
+  const name=$('#nm').value.trim();if(!name){$('#nm').focus();return}
+  const rec=mode==='section'?{id:RV.uid(),k:'s',name,c:Date.now()}
+    :{id:RV.uid(),k:'t',name,n:0,...(pendSec?{s:pendSec}:{}),c:Date.now()};
+  RV.put(rec).then(()=>{$('#dlg').close();load()});
+}
+$('#ok').onclick=addItem;$('#cx').onclick=()=>$('#dlg').close();
+$('#nm').addEventListener('keydown',e=>{if(e.key==='Enter')addItem()});
+
+RV.on(load);bindSyncButton();
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')load()});
+setInterval(()=>{if(document.visibilityState==='visible')render()},60000);
+RV.open().then(async()=>{await load();RV.start(5000)});
+</script>
+</body>
+</html>
