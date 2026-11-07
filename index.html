@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#EEF1EF">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" href="icon-192.png">
+<title>Revise</title>
+<style>
+:root{--bg:#EEF1EF;--card:#fff;--ink:#17302D;--mute:#667A77;--line:#D9E0DD;--acc:#0F766E;--rec:#E5484D;--r:14px}
+:root[data-theme=dark]{--bg:#0E1514;--card:#16201F;--ink:#E4EEEC;--mute:#8CA19E;--line:#263433;--acc:#2DD4BF;--rec:#FF6369}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 "Avenir Next","Segoe UI",system-ui,sans-serif;padding:0 env(safe-area-inset-right) 60px env(safe-area-inset-left)}
+a{color:inherit}
+header{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line);padding:calc(10px + env(safe-area-inset-top)) 16px 10px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+header .back{text-decoration:none;border:1px solid var(--line);background:var(--card);border-radius:10px;padding:8px 14px;font-weight:600}
+header h1{font-size:20px;margin:0;letter-spacing:-.02em}
+.sp{flex:1}
+#syncb{font:inherit;font-size:13px;border:1px solid var(--line);background:var(--card);border-radius:10px;padding:8px 12px;text-decoration:none;color:var(--ink);white-space:nowrap}
+#syncb.ok{color:var(--acc)}#syncb.err{color:var(--rec)}
+main{max-width:900px;margin:auto;padding:16px}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:13px;color:var(--mute);margin-bottom:14px}
+.legend i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:10px}
+.box{position:relative;aspect-ratio:1/1;border-radius:14px;border:1px solid rgba(255,255,255,.18);color:#fff;font:inherit;cursor:pointer;padding:10px 8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;text-align:center;
+  background:var(--c);box-shadow:0 1px 0 rgba(0,0,0,.08);-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;touch-action:manipulation;transition:transform .12s,background .3s}
+.box:active{transform:scale(.96)}
+.box .n{font-weight:700;font-size:15px;line-height:1.2;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;text-shadow:0 1px 2px rgba(0,0,0,.25)}
+.box .d{font-size:12px;opacity:.92;text-shadow:0 1px 2px rgba(0,0,0,.25)}
+.box .p{font-size:24px;font-weight:800;line-height:1;text-shadow:0 1px 2px rgba(0,0,0,.25)}
+.box.lite{color:#0B1F1C}.box.lite .n,.box.lite .d,.box.lite .p{text-shadow:none}
+.box.holding{transform:scale(.93);filter:brightness(.9)}
+.box .go{position:absolute;top:4px;right:4px;width:26px;height:26px;border-radius:50%;background:rgba(0,0,0,.22);color:#fff;display:grid;place-items:center;text-decoration:none;font-size:13px;opacity:.85}
+.box .go:hover{opacity:1;background:rgba(0,0,0,.4)}
+.add{background:transparent;border:2px dashed var(--line);color:var(--mute);font-size:34px;gap:0}
+.add small{font-size:12px}
+.add:hover{border-color:var(--acc);color:var(--acc)}
+.note{font-size:13px;color:var(--mute)}
+.empty{grid-column:1/-1;color:var(--mute);padding:6px 2px}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+dialog{border:1px solid var(--line);border-radius:var(--r);background:var(--card);color:var(--ink);padding:18px;width:min(92vw,380px)}
+dialog::backdrop{background:rgba(0,0,0,.45)}
+dialog h3{margin:0 0 10px}
+dialog input{font:inherit;color:inherit;width:100%;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px}
+.row{display:flex;gap:8px;margin-top:12px;justify-content:flex-end}
+.row button{font:inherit;color:inherit;cursor:pointer;border:1px solid var(--line);background:var(--card);border-radius:10px;padding:8px 14px}
+.row .pri{background:var(--acc);border-color:var(--acc);color:var(--bg);font-weight:600}
+.plan{margin-top:18px;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px}
+.plan h3{margin:0 0 4px;font-size:16px}
+.plan label{display:block;font-size:13px;color:var(--mute);margin:8px 0 4px}
+.plan input{font:inherit;color:inherit;width:100%;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px}
+#planOut{margin-top:12px;font-size:15px}
+#planOut .big{font-size:26px;font-weight:800;letter-spacing:-.02em;color:var(--acc)}
+#planOut .warn{color:var(--rec);font-weight:600}
+#planOut .sub{font-size:13px;color:var(--mute);margin-top:4px}
+.planChart{margin-top:14px}
+.cht{display:block;width:100%;touch-action:pan-y;overflow:visible}
+.cht text{fill:var(--mute);font-size:11px;font-family:inherit}
+.cht .grid-l{stroke:var(--line);stroke-width:1}
+.cht .axis{stroke:var(--mute);stroke-width:1}
+.cht .curve{fill:none;stroke:var(--acc);stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round}
+.cht .imp{fill:var(--rec);opacity:.13}
+.cht .lim{stroke:var(--rec);stroke-width:1.5;stroke-dasharray:5 4}
+.cht text.limt{fill:var(--rec);font-weight:700}
+.cht .me{stroke:var(--acc);stroke-width:1.2;stroke-dasharray:3 3}
+.cht .dot{fill:var(--acc);stroke:var(--card);stroke-width:2}
+.cht .tipl{stroke:var(--ink);stroke-width:1;opacity:.5}
+.cht .tipt{fill:var(--ink);font-weight:700;font-size:12px}
+.cht .ttl{font-size:12px}
+.chtkey{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--mute);margin-top:4px}
+.chtkey i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px;vertical-align:-2px}
+#toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--ink);color:var(--bg);border-radius:12px;padding:10px 14px;display:none;gap:14px;align-items:center;z-index:20;max-width:92vw;box-shadow:0 6px 20px rgba(0,0,0,.25)}
+#toast.on{display:flex}
+#toast button{font:inherit;background:none;border:0;color:inherit;font-weight:700;text-decoration:underline;cursor:pointer;padding:0}
+
+.sec{margin-bottom:30px}
+.sechead{display:flex;align-items:center;gap:8px;margin:0 0 10px}
+.sechead h2{font-size:18px;margin:0;flex:1;letter-spacing:-.01em;overflow-wrap:anywhere}
+.mini{font:inherit;font-size:12px;color:var(--mute);border:1px solid var(--line);background:var(--card);border-radius:8px;padding:5px 10px;cursor:pointer}
+.newsec{font:inherit;width:100%;cursor:pointer;border:2px dashed var(--line);background:transparent;color:var(--mute);border-radius:var(--r);padding:16px;font-size:16px;margin-top:6px}
+.newsec:hover{border-color:var(--acc);color:var(--acc)}
+.box .q{font-size:11px;opacity:.9;text-shadow:0 1px 2px rgba(0,0,0,.25)}
+.box.lite .q{text-shadow:none}
+.box .n{-webkit-line-clamp:2}
+.box .uq{position:absolute;bottom:6px;left:50%;transform:translateX(-50%);max-width:calc(100% - 12px);overflow:hidden;text-overflow:ellipsis;background:rgba(0,0,0,.35);color:#fff;border-radius:999px;padding:2px 8px;font-size:11px;font-weight:700;white-space:nowrap;text-shadow:none}
+</style>
+</head>
+<body>
+<header>
+  <h1>Revise</h1>
+  <span class="sp"></span>
+  <a id="syncb" href="#sync">Sync</a>
+</header>
+<main>
+  <div class="legend" id="legend"></div>
+  <div id="secs"></div>
+  <button class="newsec" id="addsec" type="button">+ New section (separate heatmap &amp; planner)</button>
+  <p class="note" style="margin-top:16px">Tap a box = you did 20 more questions of that topic. Press and hold (or tap &#8599;) = open its page to see history, set the total questions and change its name.</p>
+</main>
+
+<dialog id="dlg">
+  <h3 id="dh">New revision topic</h3>
+  <input id="nm" maxlength="80" placeholder="Topic name" aria-label="Name" autocomplete="off">
+  <div class="row"><button type="button" id="cx">Cancel</button><button type="button" class="pri" id="ok">Add</button></div>
+</dialog>
+<div id="toast" role="status"><span id="tmsg"></span><button id="undo">Undo</button></div>
+
+<script src="revise.js?v=5"></script>
+<script>
+let T=[],L=[],S=[],Q=[],mode='topic',pendSec='';
+const topicUrl=id=>'topic.html?t='+encodeURIComponent(id);
+const secList=()=>[{id:'',name:'Main'},...S];
+const paceKey=sid=>'rv-pace'+(sid?'-'+sid:'');
+const paceOf=sid=>{try{return localStorage.getItem(paceKey(sid))||''}catch(e){return''}};
+
+function boxHTML(t){
+  const s=scoreOf(t,L),uq=Q.filter(q=>q.t===t.id).length;
+  return `<button class="box${s.S>75?' lite':''}" data-id="${esc(t.id)}" style="--c:${colourOf(s.S)}" aria-label="${esc(t.name)}, ${s.pct}% complete, ${t.n||0} questions, ${uq} unsolved, ${esc(s.label)}. Tap to log 20 questions.">
+    <a class="go" href="${topicUrl(t.id)}" aria-label="Open ${esc(t.name)} page">&#8599;</a>${uq?`<span class="uq">${uq} unsolved</span>`:''}
+    <span class="p">${s.pct}%</span><span class="n">${esc(t.name)}</span><span class="d">${esc(s.label)}</span><span class="q">${t.n||0} Q</span></button>`;
+}
+function secHTML(sec,head){
+  const ts=T.filter(t=>(t.s||'')===sec.id);
+  return `<section class="sec" data-sec="${esc(sec.id)}">
+    ${head?`<div class="sechead"><h2>${esc(sec.name)}</h2>${sec.id?`<button class="mini" data-act="ren" type="button">Rename</button><button class="mini" data-act="delsec" type="button">Delete</button>`:''}</div>`:''}
+    <div class="grid">${ts.map(boxHTML).join('')}<button class="box add" aria-label="Add a new revision topic">+<small>New topic</small></button>${ts.length?'':'<p class="empty">No topics yet. Tap + to add your first one.</p>'}</div>
+    <section class="plan">
+      <h3>Finish-line planner</h3>
+      <div class="note">How long until every topic${head?' in '+esc(sec.name):''} is fully revised (100%) at the same time?</div>
+      <label>Number of questions per day</label>
+      <input class="qpd" data-sec="${esc(sec.id)}" type="number" inputmode="numeric" min="1" step="1" placeholder="e.g. 60" value="${esc(paceOf(sec.id))}">
+      <div class="planOut" role="status"></div>
+      <div class="planChart"></div>
+    </section></section>`;
+}
+function render(){
+  const a=document.activeElement,keep=a&&a.classList&&a.classList.contains('qpd')?a.dataset.sec:null;
+  const head=S.length>0;
+  $('#secs').innerHTML=secList().map(s=>secHTML(s,head)).join('');
+  if(keep!==null){const el=document.querySelector('.qpd[data-sec="'+keep+'"]');if(el)el.focus()}
+  document.querySelectorAll('.sec').forEach(updatePlan);
+  $('#legend').innerHTML=`<span>Revision score</span><span style="flex:1;min-width:140px;height:11px;border-radius:6px;align-self:center;background:linear-gradient(90deg,#000 0%,#DC2626 29%,#EA7A0C 59%,#FACC15 80%,#22E55E 100%);border:1px solid var(--line)"></span><span>1 &rarr; 100 &middot; % on a box = completion</span>`;
+}
+/* ----- finish-line planner (per section) ----- */
+/* Model for one section. qNeed[D] = fewest questions/day that finish every topic exactly on day D.
+   (Everything that needs q is independent of q, so the table is built once and the chart reads from it.) */
+function buildModel(all){
+  const ts=all.filter(t=>t.n>0),skipped=all.length-ts.length;
+  if(!ts.length)return null;
+  const MAXD=730,by=ts.map(t=>L.filter(l=>l.t===t.id).map(l=>daysSince(l.ts)));
+  const qNeed=[0];let need1=0;
+  for(let D=1;D<=MAXD;D++){
+    let need=0;ts.forEach((t,i)=>{const h=by[i].reduce((a,d)=>a+setVal(d+D-1),0);need+=Math.max(0,t.n-h)});
+    if(D===1)need1=need;
+    let C=0;for(let k=0;k<Math.min(D,LIFE);k++)C+=setVal(k);
+    qNeed[D]=need/C*SET;
+  }
+  const qmin=Math.min(...qNeed.slice(1));
+  const daysFor=q=>{for(let D=1;D<=MAXD;D++)if(qNeed[D]<=q+1e-9)return D;return null};
+  return{skipped,need1,qmin,qlim:Math.ceil(qmin-1e-9),daysFor};
+}
+function plan(q,all){
+  const m=buildModel(all);
+  if(!m)return{k:'none'};
+  if(m.need1<=0)return{k:'done',skipped:m.skipped};
+  const D=m.daysFor(q);
+  return D?{k:'ok',D,skipped:m.skipped}:{k:'never',min:m.qlim,skipped:m.skipped};
+}
+function tickStep(max,n){const raw=max/n,p=Math.pow(10,Math.floor(Math.log10(raw))),f=raw/p;return(f<=1?1:f<=2?2:f<=5?5:10)*p}
+const charts={};
+function drawChart(sid,box,all,uq){
+  const m=buildModel(all);
+  if(!m||m.need1<=0){box.innerHTML='';delete charts[sid];return}
+  const W=Math.max(260,box.clientWidth||320),H=250,l=44,r=14,t=26,b=40,pw=W-l-r,ph=H-t-b,qlim=m.qlim;
+  const userD=uq>0?m.daysFor(uq):null;
+  const xs0=Math.max(qlim*2.2,uq>0?uq*1.25:0,qlim+30),xst=tickStep(xs0,5),xmax=Math.ceil(xs0/xst)*xst;
+  const yref=m.daysFor(Math.max(qlim*1.15,qlim+1))||5,ys0=Math.max(yref,userD||0,5),yst=tickStep(ys0,4),ymax=Math.ceil(ys0/yst)*yst;
+  const X=q=>l+q/xmax*pw,Y=d=>t+(1-d/ymax)*ph,N=90,pts=[];
+  for(let i=0;i<=N;i++){const q=qlim+(xmax-qlim)*i/N;const d=m.daysFor(q);if(d)pts.push(X(q).toFixed(1)+','+Y(d).toFixed(1))}
+  let g='';
+  for(let v=0;v<=ymax+1e-9;v+=yst)g+=`<line class="grid-l" x1="${l}" x2="${W-r}" y1="${Y(v)}" y2="${Y(v)}"/><text x="${l-6}" y="${Y(v)+4}" text-anchor="end">${Math.round(v)}</text>`;
+  for(let v=0;v<=xmax+1e-9;v+=xst)g+=`<text x="${X(v)}" y="${H-b+16}" text-anchor="middle">${Math.round(v)}</text>`;
+  const lx=X(qlim),right=lx>W-90;
+  g+=`<rect class="imp" x="${l}" y="${t}" width="${Math.max(0,lx-l)}" height="${ph}"/>`;
+  g+=`<clipPath id="cp${esc(sid||'main')}"><rect x="${l}" y="${t}" width="${pw}" height="${ph}"/></clipPath>`;
+  g+=`<polyline class="curve" clip-path="url(#cp${esc(sid||'main')})" points="${pts.join(' ')}"/>`;
+  g+=`<line class="lim" x1="${lx}" x2="${lx}" y1="${t}" y2="${t+ph}"/><text class="limt" x="${right?lx-5:lx+5}" y="${t+13}" text-anchor="${right?'end':'start'}">min ${qlim}/day</text>`;
+  if(uq>0&&uq<=xmax){
+    g+=`<line class="me" x1="${X(uq)}" x2="${X(uq)}" y1="${t}" y2="${t+ph}"/>`;
+    if(userD)g+=`<circle class="dot" cx="${X(uq)}" cy="${Y(userD)}" r="5"/>`;
+  }
+  g+=`<line class="axis" x1="${l}" x2="${W-r}" y1="${t+ph}" y2="${t+ph}"/><line class="axis" x1="${l}" x2="${l}" y1="${t}" y2="${t+ph}"/>`;
+  g+=`<text x="${l+pw/2}" y="${H-6}" text-anchor="middle">Questions per day</text><text x="12" y="${t+ph/2}" text-anchor="middle" transform="rotate(-90 12 ${t+ph/2})">Days until all at 100%</text>`;
+  g+=`<line class="tipl" x1="0" x2="0" y1="${t}" y2="${t+ph}" style="display:none"/><text class="tipt" x="${l}" y="14"></text>`;
+  box.innerHTML=`<svg class="cht" viewBox="0 0 ${W} ${H}" role="img" aria-label="Line chart: days until every topic is fully revised against questions per day. Not possible below ${qlim} questions per day.">${g}</svg>
+    <div class="chtkey"><span><i style="background:var(--acc)"></i>Days needed</span><span><i style="background:var(--rec);opacity:.35"></i>Not possible (below ${qlim}/day)</span>${uq>0?'<span><i style="background:none;border:1px dashed var(--acc)"></i>Your pace</span>':''}</div>`;
+  charts[sid]={m,l,pw,xmax,qlim,W};
+}
+function updatePlan(sec){
+  const sid=sec.dataset.sec,inp=sec.querySelector('.qpd'),out=sec.querySelector('.planOut'),q=parseFloat(inp.value);
+  try{localStorage.setItem(paceKey(sid),inp.value)}catch(e){}
+  const all=T.filter(t=>(t.s||'')===sid);
+  drawChart(sid,sec.querySelector('.planChart'),all,q>0?q:0);
+  if(!(q>0)){out.innerHTML='<div class="sub">Enter how many questions you can do per day.</div>';return}
+  const r=plan(q,all);
+  if(r.k==='none'){out.innerHTML='<div class="sub">Open a topic and enter its total number of questions first.</div>';return}
+  const skip=r.skipped?`<div class="sub">${r.skipped} topic${r.skipped>1?'s have':' has'} no total questions yet and ${r.skipped>1?'are':'is'} left out.</div>`:'';
+  if(r.k==='done'){out.innerHTML='<div class="big">Already complete</div><div class="sub">Every topic is at 100% right now.</div>'+skip;return}
+  if(r.k==='never'){out.innerHTML=`<div class="warn">Not reachable at ${q} questions/day.</div><div class="sub">Each set loses its value over 20 days, so to hold every topic at 100% together you need at least ${r.min} questions/day.</div>`+skip;return}
+  const d=new Date();d.setDate(d.getDate()+r.D-1);
+  out.innerHTML=`<div class="big">${r.D} day${r.D>1?'s':''}</div>
+    <div>Every topic reaches 100% on <b>${d.toLocaleDateString(undefined,{weekday:'short',day:'numeric',month:'short',year:'numeric'})}</b> (counting today as day 1).</div>
+    <div class="sub">${Math.round(r.D*q)} questions in total at ${(q/SET).toFixed(1)} sets a day. Counts your logged revisions and the 20-day fading of every set.</div>`+skip;
+}
+/* hover / touch the chart to read any point */
+function chartTip(e){
+  const svg=e.target.closest('.cht');if(!svg)return;
+  const sid=svg.closest('.sec').dataset.sec,c=charts[sid];if(!c)return;
+  const rc=svg.getBoundingClientRect(),px=(e.clientX-rc.left)*(c.W/rc.width);
+  const q=Math.max(0,Math.min(c.xmax,Math.round((px-c.l)/c.pw*c.xmax)));
+  const ln=svg.querySelector('.tipl'),tx=svg.querySelector('.tipt'),x=c.l+q/c.xmax*c.pw;
+  ln.setAttribute('x1',x);ln.setAttribute('x2',x);ln.style.display='';
+  const d=q>=c.qlim?c.m.daysFor(q):null;
+  tx.textContent=d?`${q} q/day → ${d} day${d>1?'s':''}`:`${q} q/day → not possible`;
+  tx.setAttribute('text-anchor',x>c.W/2?'end':'start');tx.setAttribute('x',x>c.W/2?Math.min(x,c.W-4):Math.max(x,4));
+}
+async function load(){const d=await RV.all();T=d.topics;L=d.logs;S=d.sections;Q=d.questions;render()}
+
+/* ----- tap = revised now; long press = open topic page ----- */
+let lp=null,lpFired=false,sx=0,sy=0,lastLog=null,tt=null;
+function toast(m,undo){clearTimeout(tt);$('#tmsg').textContent=m;$('#undo').style.display=undo?'':'none';$('#toast').classList.add('on');tt=setTimeout(()=>$('#toast').classList.remove('on'),5000)}
+const secs=$('#secs');
+secs.addEventListener('pointermove',chartTip);secs.addEventListener('pointerdown',chartTip);
+secs.addEventListener('pointerleave',()=>document.querySelectorAll('.cht .tipl').forEach(x=>x.style.display='none'));
+let rz=null;addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(()=>document.querySelectorAll('.sec').forEach(updatePlan),150)});
+secs.addEventListener('input',e=>{const i=e.target.closest('.qpd');if(i)updatePlan(i.closest('.sec'))});
+secs.addEventListener('pointerdown',e=>{
+  const b=e.target.closest('.box[data-id]');if(!b||e.target.closest('.go'))return;
+  lpFired=false;sx=e.clientX;sy=e.clientY;b.classList.add('holding');
+  lp=setTimeout(()=>{lpFired=true;b.classList.remove('holding');if(navigator.vibrate)try{navigator.vibrate(30)}catch(x){}location.href=topicUrl(b.dataset.id)},550);
+});
+const cancel=()=>{clearTimeout(lp);document.querySelectorAll('.box.holding').forEach(x=>x.classList.remove('holding'))};
+secs.addEventListener('pointermove',e=>{if(lp&&Math.hypot(e.clientX-sx,e.clientY-sy)>10)cancel()});
+['pointerup','pointercancel','pointerleave'].forEach(ev=>secs.addEventListener(ev,cancel));
+secs.addEventListener('contextmenu',e=>{if(e.target.closest('.box'))e.preventDefault()});
+function openDlg(m,sid){
+  mode=m;pendSec=sid||'';
+  $('#dh').textContent=m==='section'?'New section':'New revision topic';
+  $('#nm').placeholder=m==='section'?'Section name (e.g. SSC English)':'Topic name';
+  $('#nm').value='';$('#dlg').showModal();setTimeout(()=>$('#nm').focus(),50);
+}
+secs.addEventListener('click',e=>{
+  if(e.target.closest('.go'))return;
+  const act=e.target.closest('[data-act]');
+  if(act){
+    const sid=act.closest('.sec').dataset.sec,sec=S.find(x=>x.id===sid);if(!sec)return;
+    if(act.dataset.act==='ren'){const n=prompt('Rename section',sec.name);if(n&&n.trim())RV.put({...sec,name:n.trim().slice(0,80)}).then(load)}
+    else{
+      const tids=T.filter(t=>t.s===sid).map(t=>t.id),lids=[...L.filter(l=>tids.includes(l.t)).map(l=>l.id),...Q.filter(q=>tids.includes(q.t)).map(q=>q.id)];
+      if(confirm('Delete section "'+sec.name+'" with its '+tids.length+' topic(s) and all their history?'))RV.del([sid,...tids,...lids]).then(load);
+    }
+    return;
+  }
+  const b=e.target.closest('.box');if(!b)return;
+  if(b.classList.contains('add')){openDlg('topic',b.closest('.sec').dataset.sec);return}
+  if(lpFired){lpFired=false;return}
+  const t=T.find(x=>x.id===b.dataset.id);if(!t)return;
+  const rec={id:RV.uid(),k:'r',t:t.id,ts:Date.now()};
+  lastLog=rec.id;
+  RV.put(rec).then(load);
+  toast('+20 questions logged for “'+t.name+'”',true);
+});
+$('#undo').onclick=()=>{if(lastLog){RV.del(lastLog).then(load);lastLog=null}$('#toast').classList.remove('on')};
+$('#addsec').onclick=()=>openDlg('section');
+
+/* ----- add topic / section ----- */
+function addItem(){
+  const name=$('#nm').value.trim();if(!name){$('#nm').focus();return}
+  const rec=mode==='section'?{id:RV.uid(),k:'s',name,c:Date.now()}
+    :{id:RV.uid(),k:'t',name,n:0,...(pendSec?{s:pendSec}:{}),c:Date.now()};
+  RV.put(rec).then(()=>{$('#dlg').close();load()});
+}
+$('#ok').onclick=addItem;$('#cx').onclick=()=>$('#dlg').close();
+$('#nm').addEventListener('keydown',e=>{if(e.key==='Enter')addItem()});
+
+RV.on(load);bindSyncButton();
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')load()});
+setInterval(()=>{if(document.visibilityState==='visible')render()},60000);
+RV.open().then(async()=>{await load();RV.start(5000)});
+</script>
+</body>
+</html>
