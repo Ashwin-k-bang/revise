@@ -27,7 +27,7 @@
 {"id":"mvy4o9d1t4ay3","k":"r","t":"mvv5yvjcnpbgf","ts":1793555562853,"u":1793555562853},
 {"id":"mvy54y0kv8qek","k":"t","name":"SI","n":189,"c":1793556341300,"u":1794026640194},
 {"id":"mvy5510crmh7f","k":"t","name":"CI","n":277,"c":1793556345180,"u":1793794580589},
-{"id":"mvy5570j0upa6","k":"t","name":"Ratio Proportion","n":27,"c":1793556352963,"u":1794239229586},
+{"id":"mvy5570j0upa6","k":"t","name":"Ratio Proportion","n":274,"c":1793556352963,"u":1794239230634},
 {"id":"mvy55crw4rjuf","k":"t","name":"Average","n":267,"c":1793556360428,"u":1793801374421},
 {"id":"mvy55lo9jlj9t","k":"t","name":"Mensuration","n":0,"c":1793556371961,"u":1793556383302},
 {"id":"mvy560cffw05l","k":"t","name":"Geometry","n":0,"c":1793556390975,"u":1793556390976},
@@ -369,6 +369,7 @@
 {"id":"mw9dl31d0a9kf","k":"q","t":"mvy5570j0upa6","text":"The Sum of squares of three natural numbers i 1029, and they are in the proportion 1:2:4. The difference between greatest number and the smallest nubers is? (21,15,18,31) (Solved example) \nWhy cant it be solved using Ration proportion 1unit measure wise","c":1794235659169,"u":1794235695375},
 {"id":"mw9ec1waz6eio","k":"q","t":"mvy5570j0upa6","text":"Q11. Type1 :Let x, y, z be fractions such that x < y< z: if z is divided by x, the result is 5/2 which exceeds y by 7/4. IF x + Y + z = 23/12, then the ratio of (z-x) : (y-x) is ?","c":1794236917402,"u":1794236917402},
 {"id":"mw9flulztlt2v","k":"q","t":"mvy5570j0upa6","text":"Q20 Type1: if P/3 : Q/5 : R/2 then what is the value of (P + 2Q+ 3R) : (P + Q + R)","c":1794239054135,"u":1794239054135},
-{"id":"mw9fon9yh68ys","k":"q","t":"mvy5570j0upa6","text":"Type1 Q2: In a class of 80 students, the ratio of the urban to the rural is 5:3. In a test, the average score of the rural student is 40% more than that of urban students. If the average score of all the students is 69. then what is the average score of the rural students.?","c":1794239184598,"u":1794239184598}
+{"id":"mw9fon9yh68ys","k":"q","t":"mvy5570j0upa6","text":"Type1 Q2: In a class of 80 students, the ratio of the urban to the rural is 5:3. In a test, the average score of the rural student is 40% more than that of urban students. If the average score of all the students is 69. then what is the average score of the rural students.?","c":1794239184598,"u":1794239184598},
+{"id":"mw9fpniuto13y","k":"r","t":"mvy5570j0upa6","ts":1794239231574,"u":1794239231574}
 ]
 }
