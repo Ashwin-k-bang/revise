@@ -31,7 +31,7 @@
 {"id":"mvy55crw4rjuf","k":"t","name":"Average","n":267,"c":1793556360428,"u":1793801374421},
 {"id":"mvy55lo9jlj9t","k":"t","name":"Mensuration","n":0,"c":1793556371961,"u":1793556383302},
 {"id":"mvy560cffw05l","k":"t","name":"Geometry","n":0,"c":1793556390975,"u":1793556390976},
-{"id":"mvy56b5q4kwpu","k":"t","name":"Time and Work","n":0,"c":1793556404990,"u":1793556404990},
+{"id":"mvy56b5q4kwpu","k":"t","name":"Time and Work","n":40,"c":1793556404990,"u":1794326721972},
 {"id":"mvz80kyymxo7e","k":"t","name":"Number System + LCM/ HCF","n":0,"c":1793621642794,"u":1793621659666},
 {"id":"mvz81cvimq6sk","k":"t","name":"Percentage","n":0,"c":1793621678958,"u":1793621678958},
 {"id":"mvz81ljwnvk6i","k":"t","name":"Profit and Loss","n":359,"c":1793621690204,"u":1794067854844},
@@ -370,6 +370,7 @@
 {"id":"mw9ec1waz6eio","k":"q","t":"mvy5570j0upa6","text":"Q11. Type1 :Let x, y, z be fractions such that x < y< z: if z is divided by x, the result is 5/2 which exceeds y by 7/4. IF x + Y + z = 23/12, then the ratio of (z-x) : (y-x) is ?","c":1794236917402,"u":1794236917402},
 {"id":"mw9flulztlt2v","k":"q","t":"mvy5570j0upa6","text":"Q20 Type1: if P/3 : Q/5 : R/2 then what is the value of (P + 2Q+ 3R) : (P + Q + R)","c":1794239054135,"u":1794239054135},
 {"id":"mw9fon9yh68ys","k":"q","t":"mvy5570j0upa6","text":"Type1 Q2: In a class of 80 students, the ratio of the urban to the rural is 5:3. In a test, the average score of the rural student is 40% more than that of urban students. If the average score of all the students is 69. then what is the average score of the rural students.?","c":1794239184598,"u":1794239184598},
-{"id":"mw9fpniuto13y","k":"r","t":"mvy5570j0upa6","ts":1794239231574,"u":1794239231574}
+{"id":"mw9fpniuto13y","k":"r","t":"mvy5570j0upa6","ts":1794239231574,"u":1794239231574},
+{"id":"mwavsw2g8v42i","k":"r","t":"mvy56b5q4kwpu","ts":1794326722648,"u":1794326722648}
 ]
 }
