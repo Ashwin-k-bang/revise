@@ -115,6 +115,16 @@ dialog input{font:inherit;color:inherit;width:100%;background:var(--card);border
 .cht2 .dot{fill:var(--acc);stroke:var(--card);stroke-width:2}
 .cht2 .tipl{stroke:var(--ink);stroke-width:1;opacity:.5}
 .cht2 .tipt{fill:var(--ink);font-weight:700;font-size:12px}
+
+/* desktop / PC layout: heatmap on the left, charts + planner on the right. Phones and tablets are unchanged. */
+@media (min-width:1000px){
+  main{max-width:1440px;padding:20px 28px}
+  .sec{display:grid;grid-template-columns:minmax(0,1fr) minmax(380px,460px);grid-template-areas:"head head" "heat hist" "heat plan";column-gap:22px;row-gap:0;align-items:start}
+  .sec>.sechead{grid-area:head}
+  .sec>.grid{grid-area:heat}
+  .sec>.plan.hist{grid-area:hist;margin-top:0}
+  .sec>.plan:not(.hist){grid-area:plan}
+}
 </style>
 </head>
 <body>
